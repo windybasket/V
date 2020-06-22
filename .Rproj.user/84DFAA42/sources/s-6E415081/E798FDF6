@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590148289323.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E798FDF6",
+    "lastKnownWriteTime" : 1590149822,
+    "last_content_update" : 1590149822,
+    "path" : "/media/l/barracuda2/viraltrack/src/Viral_Track_cell_demultiplexing.R",
+    "project_path" : "Viral_Track_cell_demultiplexing.R",
+    "properties" : {
+        "cursorPosition" : "102,8",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

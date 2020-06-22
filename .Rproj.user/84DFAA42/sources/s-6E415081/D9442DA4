@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590148286746.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D9442DA4",
+    "lastKnownWriteTime" : 1590152377,
+    "last_content_update" : 1590152377094,
+    "path" : "/media/l/barracuda2/viraltrack/src/Viral_Track_transcript_assembly.R",
+    "project_path" : "Viral_Track_transcript_assembly.R",
+    "properties" : {
+        "cursorPosition" : "152,0",
+        "scrollLine" : "129"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

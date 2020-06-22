@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590150322382.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D0DD6A9B",
+    "lastKnownWriteTime" : 1590144918,
+    "last_content_update" : 1590144918,
+    "path" : "/media/l/barracuda2/viraltrack/src/Viral_Track_scanning.R",
+    "project_path" : "Viral_Track_scanning.R",
+    "properties" : {
+        "cursorPosition" : "269,75",
+        "scrollLine" : "257"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

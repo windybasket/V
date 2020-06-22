@@ -1,0 +1,117 @@
+library(rtracklayer)
+library(Gviz)
+library(GenomicFeatures)
+library(data.table)
+
+dir="/media/l/hyper_x16_2/barcode_filter/out/bam"
+accessoriesdir="/media/l/hyper_x16_2/barcode_filter/accessories"
+outdir="/home/l/Desktop/figures/R"
+
+outtable="~/Desktop/figures/R/genedf.csv"
+nametiff="23hcell.tiff"
+
+target="MG989512" #filename
+target1="MG989512.1" #name as written in fasta
+
+path_gff3 = paste(accessoriesdir, paste0(target,".gff3"), sep="/")
+fasta=paste(accessoriesdir, paste0(target,".fasta"), sep="/")
+files = Sys.glob(file.path(paste0(dir), "*.bam"))
+files
+
+#nametiff="all_pbmc_cell.tiff"
+
+gff3=import.gff3(path_gff3)
+gff3=gff3[gff3$type == "gene"]
+gene2symbol=mcols(gff3)[,c("Name", "gene")]
+gene2symbol=unique(gene2symbol)
+rownames(gene2symbol)=gene2symbol$Name
+txdb=makeTxDbFromGFF(path_gff3)
+genetrack=GeneRegionTrack(txdb, options(ucscChromosomeNames=FALSE))
+ranges(genetrack)$exon=gene2symbol[ranges(genetrack)$gene, "Name"]
+
+#import bams as tracklist and galignments
+tracklist=list()
+gobjectlist=list()
+for (i in 1:length(files)) {
+  gobject=import(files[i], format="bam")
+  track=AlignmentsTrack(files[i], format="bam", options(ucscChromosomeNames=FALSE), chromosome = target1)
+  tracklist[[i]]=track
+  gobjectlist[[i]]=gobject
+}
+
+
+fasta_sequence=import(fasta, format="fasta", use.names=F)
+names(fasta_sequence)=target1
+fastabases=length(fasta_sequence[[1]])
+fasta_sequence
+
+seqtrack=SequenceTrack(fasta_sequence
+                       , options(ucscChromosomeNames=FALSE)
+                       , importFunction = "fasta"
+                       , genome = target1
+                       , name = target1
+                       , chromosome = target1
+                       )
+
+plotTracks(list(tracklist[[99]], genetrack, seqtrack)
+           , chromosome = target1
+           , from = 1
+           , to = fastabases
+           , showExonId=T
+           , size=1
+           , cex=0.5
+           #, col="black"
+           , fontcolor.item='black'
+           #, type="coverage"
+           )
+  
+
+
+
+#identical(genelist[[36]], character(0))
+
+#overlap with gff3
+genelist=list()
+for (i in 1:length(gobjectlist)){
+  temp=subsetByOverlaps(gff3, gobjectlist[[i]])$gene
+  genelist[[i]]=temp
+}
+
+#true false for genes
+genebooll=list()
+ugene=unique(gff3$gene)
+for (i in 1:length(ugene)){
+  bool=grepl(ugene[i], genelist, fixed=T)
+  genebooll[[i]]=bool
+}
+
+genedf=do.call(rbind, genebooll)
+rownames(genedf)=ugene
+genedf=as.data.frame(genedf)
+fwrite(genedf, outtable, row.names = T)
+
+#which have reads from x or more genes
+numgenes=5
+colSums(genedf)
+which(colSums(genedf)>=numgenes)
+hcell=as.vector(which(colSums(genedf)>=numgenes))
+genedf[,hcell] ; length(which(colSums(genedf)>=numgenes)) 
+hcelltracklist=tracklist[hcell]
+tiff(paste(outdir, nametiff, sep="/"), units="in", width=5, height=5, res=400)
+plotTracks(c(hcelltracklist
+             , genetrack
+             , seqtrack
+             )
+           , type="coverage"
+           , showExonId=T
+           #, size=1
+           #, col="black"
+           , fontcolor.item='black'
+           , cex=0.4
+           , showAxis=F
+           , showSampleNames=F
+           , legend=F
+           , showColorBar=F
+           , background.title="transparent"
+)
+dev.off()
